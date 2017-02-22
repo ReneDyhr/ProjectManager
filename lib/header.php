@@ -252,6 +252,10 @@ include_once $_SERVER['DOCUMENT_ROOT'].'/config.php';
                     <i class="material-icons" role="presentation">dashboard</i>
                     Dashboard
                 </a>
+                <a class="mdl-navigation__link mdl-navigation__link" href="#">
+                    <i class="material-icons" role="presentation">create</i>
+                    Create Project
+                </a>
                 <a class="mdl-navigation__link" href="forms.php">
                     <i class="material-icons" role="presentation">person</i>
                     Account

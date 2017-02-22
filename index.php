@@ -101,7 +101,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                     </thead>
                     <tbody>
                         <tr class="is-selected">
-                            <td class="mdl-data-table__cell--non-numeric">New Year office decoration</td>
+                            <td class="mdl-data-table__cell--non-numeric"><a href="#">New Year office decoration</a></td>
                             <td class="mdl-data-table__cell--non-numeric">Dec 25</td>
                             <td class="mdl-data-table__cell--non-numeric">1 day, 6 hours, 50 minutes</td>
                         </tr>
