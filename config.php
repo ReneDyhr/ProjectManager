@@ -27,33 +27,3 @@ if (isset($_GET['page'])) {
 }
 $limitT = (($page * $limit) - $limit);
 $pagination = $limit;
-
-function shorten_string($string, $wordsreturned){
-    $retval = $string;
-    $string = preg_replace('/(?<=\S,)(?=\S)/', ' ', $string);
-    $string = str_replace("\n", " ", $string);
-    $array = explode(" ", $string);
-    if (count($array)<=$wordsreturned)
-    {
-        $retval = $string;
-    }
-    else
-    {
-        array_splice($array, $wordsreturned);
-        $retval = implode(" ", $array)."...";
-    }
-    return $retval;
-}
-
-function slugify($text){
-    $text = preg_replace('~[^\pL\d]+~u', '-', $text);
-    $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
-    $text = preg_replace('~[^-\w]+~', '', $text);
-    $text = trim($text, '-');
-    $text = preg_replace('~-+~', '-', $text);
-    $text = strtolower($text);
-    if (empty($text)) {
-        return 'n-a';
-    }
-    return $text;
-}
