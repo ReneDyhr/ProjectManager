@@ -1,4 +1,6 @@
 <?php
-include 'lib/classes/Basics.php';
+$file = file_get_contents('city.list.json');
 
-var_dump(Basics::validateFloat());
+echo "<pre>";
+print_r(json_decode("[".$file."]"));
+echo "</pre>";

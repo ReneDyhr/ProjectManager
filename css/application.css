@@ -6768,12 +6768,12 @@ a {
     font-size: 18px;
     position: relative
 }
-.weather .mdl-card__supporting-text .weather-description:before {
+/*.weather .mdl-card__supporting-text .weather-description:before {
     width: 35px;
     position: absolute;
     right: 150px;
     content: url(../images/cloudy_and_snow.svg)
-}
+}*/
 .weather .mdl-card__title .mdl-card__subtitle-text {
     font-size: 16px
 }
