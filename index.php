@@ -136,20 +136,40 @@ function getMinutesBetweenDates(startDate, endDate) {
     return (diff / 60000);
 }
 
-$.getJSON('http://api.openweathermap.org/data/2.5/weather?lat=' + localStorage.lat + '&lon=' + localStorage.lng + '&appid=5342396fae3e79c95bce218695ccdd33&units=metric', function(data){
-    console.log(data);
+function weather(lat, lng){
+    $.getJSON('http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lng + '&appid=5342396fae3e79c95bce218695ccdd33&units=metric', function(data){
 
-    var update = Math.floor(getMinutesBetweenDates(new Date(data['dt']*1000), new Date()));
+        var update = Math.floor(getMinutesBetweenDates(new Date(data['dt']*1000), new Date()));
 
-    var city = data['name'] + ', ' + data['sys']['country'];
-    var temp = Math.round( data['main']['temp'] * 10 ) / 10;
-    var wind = "Wind " + data['wind']['speed'] + " m/s";
-    $('.weather-city').html(city);
-    $('.weather-temperature').html(temp + "<sup>&deg;</sup>");
-    $('.weather-description').html(wind);
+        var city = data['name'] + ', ' + data['sys']['country'];
+        var temp = Math.round( data['main']['temp'] * 10 ) / 10;
+        var wind = "Wind " + data['wind']['speed'] + " m/s";
+        $('.weather-city').html(city);
+        $('.weather-temperature').html(temp + "<sup>&deg;</sup>");
+        $('.weather-description').html(wind);
 
-    $('.weather-update').html("Last updated " + update + " minutes ago");
-});
+        $('.weather-update').html("Last updated " + update + " minutes ago");
+    });
+}
+
+
+if(localStorage.location==undefined){
+    weather(localStorage.lat, localStorage.lng);
+    console.log("TESTe");
+}else{
+    console.log("TEST");
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            alert('Your browser doesn\'t support this feature!');
+        }
+    }
+    function showPosition(position) {
+        weather(position.coords.latitude, position.coords.longitude);
+    }
+    getLocation();
+}
 </script>
 <?php
 include $_SERVER['DOCUMENT_ROOT'].'/lib/footer.php';

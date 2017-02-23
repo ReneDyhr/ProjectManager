@@ -98,12 +98,32 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                 <div class="form__article settings__general_skills">
                     <div class="mdl-grid">
                         <div class="mdl-cell mdl-cell--9-col">
-                            <h3>Weather Widget</h3>
+                            <h3>Weather</h3>
                         </div>
                         <div class="mdl-cell mdl-cell--3-col">
                             <button type="button" onclick="resetMap();" class="mdl-button pull-right" data-upgraded=",MaterialButton">Reset Map</button>
                         </div>
+                        <div class="mdl-cell mdl-cell--12-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select">
+                            <input class="mdl-textfield__input" value="Celsius" type="text" id="degrees" readonly tabIndex="-1"/>
+
+                            <label class="mdl-textfield__label" for="degrees">Degrees</label>
+
+                            <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu dark_dropdown" for="degrees">
+                                <li class="mdl-menu__item">Celsius</li>
+                                <li class="mdl-menu__item">Fahrenheit</li>
+                            </ul>
+
+                            <label for="gender">
+                                <i class="mdl-icon-toggle__label material-icons">arrow_drop_down</i>
+                            </label>
+                        </div>
+
+                        <div class="mdl-cell mdl-cell--12-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <button onclick="getLocation();" type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored-light-blue" data-upgraded=",MaterialButton,MaterialRipple">Use Current Position</button>
+                        </div>
+
                     </div>
+
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                         <div id="mapCanvas"></div>
                     </div>
@@ -132,8 +152,26 @@ var geocoder = new google.maps.Geocoder();
 function resetMap(){
     localStorage.lat = 55.25;
     localStorage.lng = 9.49;
+    localStorage.removeItem("location");
     initialize(new google.maps.LatLng(localStorage.lat, localStorage.lng));
 }
+
+
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        alert('Your browser doesn\'t support this feature!');
+    }
+}
+function showPosition(position) {
+    // localStorage.lat = position.coords.latitude;
+    // localStorage.lng = position.coords.longitude;
+    localStorage.location = true;
+    // initialize(new google.maps.LatLng(localStorage.lat, localStorage.lng));
+}
+
 
 var latLng = new google.maps.LatLng(localStorage.lat, localStorage.lng);
 function initialize(latLng) {
