@@ -105,7 +105,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                         </div>
                     </div>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <div id="mapCanvas"></div>
+                        <div id="mapCanvas" class="map__target-picture"></div>
                     </div>
                 </div>
 
@@ -125,7 +125,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
 </main>
 
 
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBW0td9v69m95iy5Q2YiMebpIO7ztCnuPU"></script>
 <script type="text/javascript">
 var geocoder = new google.maps.Geocoder();
 
@@ -140,7 +140,8 @@ function initialize(latLng) {
     var map = new google.maps.Map(document.getElementById('mapCanvas'), {
         zoom: 8,
         center: latLng,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        styles: styles
     });
     var marker = new google.maps.Marker({
         position: latLng,
