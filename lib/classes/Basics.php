@@ -61,4 +61,15 @@ class Basics {
         return password_verify($string, $hash);
     }
 
+
+    public static function FahrenheitToCelsius($fahrenheit){
+        $celsius = ($fahrenheit - 32) / 1.8;
+        return $celsius;
+    }
+
+    public static function CelsiusToFahrenheit($celsius){
+        $fahrenheit = ($celsius * 9/5) + 32;
+        return $fahrenheit;
+    }
+
 }

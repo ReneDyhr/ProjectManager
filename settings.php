@@ -2,7 +2,7 @@
 include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
 ?>
 <main class="mdl-layout__content mdl-color--grey-100">
-    <div class="mdl-card mdl-shadow--2dp employer-form" action="#">
+    <div class="mdl-card mdl-shadow--2dp settings">
         <div class="mdl-card__title">
             <h2>Settings</h2>
             <div class="mdl-card__subtitle">Please complete the form</div>
@@ -48,7 +48,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                     </div>
                 </div>
 
-                <div class="form__article employer-form__contacts">
+                <div class="form__article settings__contacts">
                     <h3>Contacts</h3>
 
                     <div class="mdl-grid">
@@ -85,7 +85,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                     </div>
                 </div>
 
-                <div class="form__article employer-form__general_skills">
+                <div class="form__article settings__general_skills">
                     <h3>General skills</h3>
 
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -95,7 +95,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                 </div>
 
 
-                <div class="form__article employer-form__general_skills">
+                <div class="form__article settings__general_skills">
                     <div class="mdl-grid">
                         <div class="mdl-cell mdl-cell--9-col">
                             <h3>Weather Widget</h3>
@@ -105,7 +105,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                         </div>
                     </div>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <div id="mapCanvas" class="map__target-picture"></div>
+                        <div id="mapCanvas"></div>
                     </div>
                 </div>
 
@@ -178,7 +178,7 @@ function initialize(latLng) {
 google.maps.event.addDomListener(window, 'load', initialize(latLng));
 
 </script>
-
+<script src="js/settings.js"></script>
 
 <?php
 include $_SERVER['DOCUMENT_ROOT'].'/lib/footer.php';
