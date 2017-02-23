@@ -136,7 +136,7 @@ function getMinutesBetweenDates(startDate, endDate) {
     return (diff / 60000);
 }
 
-$.getJSON('http://api.openweathermap.org/data/2.5/weather?id=2620961&appid=5342396fae3e79c95bce218695ccdd33&units=metric', function(data){
+$.getJSON('http://api.openweathermap.org/data/2.5/weather?lat=' + localStorage.lat + '&lon=' + localStorage.lng + '&appid=5342396fae3e79c95bce218695ccdd33&units=metric', function(data){
     console.log(data);
 
     var update = Math.floor(getMinutesBetweenDates(new Date(data['dt']*1000), new Date()));

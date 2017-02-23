@@ -39,6 +39,7 @@ include_once $_SERVER['DOCUMENT_ROOT'].'/config.php';
 <link rel="stylesheet" href="css/lib/getmdl-select.min.css">
 <link rel="stylesheet" href="css/lib/nv.d3.min.css">
 <link rel="stylesheet" href="css/application.css">
+<script src="js/custom.js"></script>
 <!-- endinject -->
 
 </head>
@@ -214,10 +215,10 @@ include_once $_SERVER['DOCUMENT_ROOT'].'/config.php';
                     </li>
                     <li class="list__item--border-top"></li>
                     <li class="mdl-menu__item mdl-list__item">
-                        <span class="mdl-list__item-primary-content">
+                        <a href="settings.php" style="color:#fff;" class="mdl-list__item-primary-content">
                             <i class="material-icons mdl-list__item-icon">settings</i>
                             Settings
-                        </span>
+                        </a>
                     </li>
                     <li class="mdl-menu__item mdl-list__item">
                         <span class="mdl-list__item-primary-content">
