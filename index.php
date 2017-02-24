@@ -117,7 +117,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                             }
                             ?>
                             <tr class="is-selected">
-                                <td class="mdl-data-table__cell--non-numeric"><a href="#"><?php echo $Project->name; ?></a></td>
+                                <td class="mdl-data-table__cell--non-numeric"><a href="project/<?php echo $Project->id; ?>"><?php echo $Project->name; ?></a></td>
                                 <td class="mdl-data-table__cell--non-numeric"><?php echo $userList; ?></td>
                                 <td class="mdl-data-table__cell--non-numeric"><?php echo $deadline; ?></td>
                                 <td class="mdl-data-table__cell--non-numeric"><?php echo Basics::secondsToTime($totalTime); ?></td>

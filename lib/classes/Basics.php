@@ -82,7 +82,31 @@ class Basics {
     public static function secondsToTime($seconds) {
         $dtF = new \DateTime('@0');
         $dtT = new \DateTime("@$seconds");
-        return $dtF->diff($dtT)->format('%a days, %h hours, %i minutes');
+        $days = $dtF->diff($dtT)->format('%a');
+        $hours = $dtF->diff($dtT)->format('%h');
+        $minutes = $dtF->diff($dtT)->format('%i');
+        $time = "";
+        if($days!=0){
+            if($days==1){
+                $time .= $days." day";
+            }else{
+                $time .= $days." days";
+            }
+            if($hours!=0){
+                $time .= ", ";
+            }
+        }
+        if($hours!=0){
+            $time .= $hours." hours";
+            if($minutes!=0){
+                $time .= ", ";
+            }
+        }
+        if($minutes!=0){
+            $time .= $minutes." minutes";
+        }
+
+        return $time;
     }
 
 }
