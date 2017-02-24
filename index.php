@@ -93,16 +93,38 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                     <thead>
                         <tr>
                             <th class="mdl-data-table__cell--non-numeric">Project</th>
+                            <th class="mdl-data-table__cell--non-numeric">Users</th>
                             <th class="mdl-data-table__cell--non-numeric">Deadline</th>
-                            <th class="mdl-data-table__cell--non-numeric">Time Used</th>
+                            <th class="mdl-data-table__cell--non-numeric">Total Time Used</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="is-selected">
-                            <td class="mdl-data-table__cell--non-numeric"><a href="#">New Year office decoration</a></td>
-                            <td class="mdl-data-table__cell--non-numeric">Dec 25</td>
-                            <td class="mdl-data-table__cell--non-numeric">1 day, 6 hours, 50 minutes</td>
-                        </tr>
+                        <?php
+                        foreach ($Projects->getUserProjects($user_id) as $project) {
+                            $Project = $Projects->getProjects($project->project_id);
+
+                            $totalTime = $Projects->getProjectTotalTime($Project->id, $user_id);
+
+                            $userList = "";
+                            foreach ($Projects->getProjectUsers($Project->id) as $user_id) {
+                                $userList .= $user_id->user_id;
+                            }
+
+                            if($Project->deadline==NULL){
+                                $deadline = "None";
+                            }else{
+                                $deadline = $Project->deadline;
+                            }
+                            ?>
+                            <tr class="is-selected">
+                                <td class="mdl-data-table__cell--non-numeric"><a href="#"><?php echo $Project->name; ?></a></td>
+                                <td class="mdl-data-table__cell--non-numeric"><?php echo $userList; ?></td>
+                                <td class="mdl-data-table__cell--non-numeric"><?php echo $deadline; ?></td>
+                                <td class="mdl-data-table__cell--non-numeric"><?php echo Basics::secondsToTime($totalTime); ?></td>
+                            </tr>
+                            <?php
+                        }
+                        ?>
                     </tbody>
                 </table>
             </div>

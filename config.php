@@ -21,6 +21,8 @@ spl_autoload_register(function ($class_name) {
 
 $user_id=1;
 
+$Projects = new Projects();
+$Account = new Account();
 
 $limit=10;
 $page = 1;

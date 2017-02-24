@@ -77,8 +77,12 @@ class Basics {
         $date1  = strtotime($date1);
         $date2 = strtotime($date2);
         return $date2 - $date1;
-
     }
 
+    public static function secondsToTime($seconds) {
+        $dtF = new \DateTime('@0');
+        $dtT = new \DateTime("@$seconds");
+        return $dtF->diff($dtT)->format('%a days, %h hours, %i minutes');
+    }
 
 }
