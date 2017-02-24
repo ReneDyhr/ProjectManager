@@ -166,10 +166,10 @@ function getLocation() {
     }
 }
 function showPosition(position) {
-    // localStorage.lat = position.coords.latitude;
-    // localStorage.lng = position.coords.longitude;
+    localStorage.lat = position.coords.latitude;
+    localStorage.lng = position.coords.longitude;
     localStorage.location = true;
-    // initialize(new google.maps.LatLng(localStorage.lat, localStorage.lng));
+    initialize(new google.maps.LatLng(localStorage.lat, localStorage.lng));
 }
 
 
