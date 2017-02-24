@@ -72,4 +72,13 @@ class Basics {
         return $fahrenheit;
     }
 
+    public static function secondsBetweenDates($date1, $date2){
+
+        $date1  = strtotime($date1);
+        $date2 = strtotime($date2);
+        return $date2 - $date1;
+
+    }
+
+
 }

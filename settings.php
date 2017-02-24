@@ -191,11 +191,13 @@ function initialize(latLng) {
     google.maps.event.addListener(marker, 'drag', function() {
         localStorage.lat = marker.getPosition().lat();
         localStorage.lng = marker.getPosition().lng();
+        localStorage.removeItem("location");
     });
 
     google.maps.event.addListener(marker, 'dragend', function() {
         localStorage.lat = marker.getPosition().lat();
         localStorage.lng = marker.getPosition().lng();
+        localStorage.removeItem("location");
     });
 
     google.maps.event.addListener(map, 'click', function(event) {
@@ -210,6 +212,7 @@ function initialize(latLng) {
         }
         localStorage.lat = event.latLng.lat();
         localStorage.lng = event.latLng.lng();
+        localStorage.removeItem("location");
     });
 }
 // Onload handler to fire off the app.
