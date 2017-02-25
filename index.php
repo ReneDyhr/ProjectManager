@@ -93,7 +93,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                     <thead>
                         <tr>
                             <th class="mdl-data-table__cell--non-numeric">Project</th>
-                            <th class="mdl-data-table__cell--non-numeric">Users</th>
+                            <th class="mdl-data-table__cell--non-numeric">Members</th>
                             <th class="mdl-data-table__cell--non-numeric">Deadline</th>
                             <th class="mdl-data-table__cell--non-numeric">Your Time Used</th>
                         </tr>

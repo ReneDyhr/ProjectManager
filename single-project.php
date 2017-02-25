@@ -7,6 +7,12 @@ if(!$Projects->checkUserToProject($user_id, $project_id)){
 }
 
 $Project = $Projects->getProjects($project_id);
+if($Project->deadline==NULL OR $Project->deadline=="None" OR $Project->deadline=="0000-00-00 00:00:00"){
+    $deadline = "None";
+}else{
+    $deadline = strftime("%d. %B %Y %H:%M", strtotime($Project->deadline));
+}
+
 
 include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
 ?>
@@ -16,36 +22,66 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
 
         <div class="mdl-grid mdl-cell mdl-cell--9-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone mdl-cell--top">
 
-            <!-- Pie chart-->
             <div class="mdl-cell mdl-cell--4-col-desktop mdl-cell--4-col-tablet mdl-cell--2-col-phone">
                 <div class="mdl-card mdl-shadow--2dp pie-chart">
                     <div class="mdl-card__title">
                         <h2 class="mdl-card__title-text"><?php echo $Project->name; ?></h2>
                     </div>
                     <div class="mdl-card__supporting-text">
-                        
+                        <table class="mdl-data-table mdl-js-data-table projects-table">
+                            <tbody>
+                                <tr>
+                                    <td class="mdl-data-table__cell--non-numeric">Deadline</td>
+                                    <td class="mdl-data-table__cell--numeric"><?php echo $deadline; ?></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-            <!-- Weather widget-->
-            <div class="mdl-cell mdl-cell--4-col-desktop mdl-cell--4-col-tablet mdl-cell--2-col-phone">
-                <div class="mdl-card mdl-shadow--2dp weather">
-                    <div class="mdl-card__title">
-                        <h2 class="mdl-card__title-text">Weather</h2>
-                        <div class="mdl-layout-spacer"></div>
-                        <div class="mdl-card__subtitle-text">
-                            <i class="material-icons">room</i>
-                            <span class="weather-city"></span>
-                        </div>
-                    </div>
-                    <div class="mdl-card__supporting-text mdl-card--expand">
-                        <p class="weather-temperature"></p>
 
-                        <p class="weather-description"></p>
-                        <p class="weather-update"></p>
+            <div class="mdl-cell mdl-cell--4-col-desktop mdl-cell--4-col-tablet mdl-cell--2-col-phone">
+                <div class="mdl-card mdl-shadow--2dp pie-chart">
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">Members</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        <table class="mdl-data-table mdl-js-data-table projects-table">
+                            <thead>
+                                <tr>
+                                    <th class="mdl-data-table__cell--non-numeric">Name</th>
+                                    <th class="mdl-data-table__cell--non-numeric">Tasks</th>
+                                    <th class="mdl-data-table__cell--non-numeric">Total Time Used</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $Users = $Projects->getProjectUsers($project_id);
+                                foreach ($Users as $user) {
+                                    $getUser = $Account->getUsers($user->user_id);
+
+                                    $totalTime = $Projects->getProjectTotalTime($project_id, $user->user_id);
+
+                                    if(empty($totalTime)){
+                                        $totalTime = "Nothing recorded";
+                                    }else{
+                                        $totalTime = Basics::secondsToTime($totalTime);
+                                    }
+                                    ?>
+                                    <tr>
+                                        <td class="mdl-data-table__cell--non-numeric"><?php echo $getUser->name; ?></td>
+                                        <td class="mdl-data-table__cell--non-numeric"></td>
+                                        <td class="mdl-data-table__cell--non-numeric"><?php echo $totalTime; ?></td>
+                                    </tr>
+                                    <?php
+                                }
+                                ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
+
             <!-- Trending widget-->
             <div class="mdl-cell mdl-cell--4-col-desktop mdl-cell--4-col-tablet mdl-cell--2-col-phone">
                 <div class="mdl-card mdl-shadow--2dp trending">
@@ -96,58 +132,24 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
 
             <!-- Table-->
             <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone overflow-x-auto">
-                <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp projects-table">
-                    <thead>
-                        <tr>
-                            <th class="mdl-data-table__cell--non-numeric">Project</th>
-                            <th class="mdl-data-table__cell--non-numeric">Users</th>
-                            <th class="mdl-data-table__cell--non-numeric">Deadline</th>
-                            <th class="mdl-data-table__cell--non-numeric">Your Time Used</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        foreach ($Projects->getUserProjects($user_id) as $project) {
-                            $Project = $Projects->getProjects($project->project_id);
-                            $totalTime = $Projects->getProjectTotalTime($Project->id, $user_id);
-
-                            if(empty($totalTime)){
-                                $totalTime = "Nothing recorded";
-                            }else{
-                                $totalTime = Basics::secondsToTime($totalTime);
-                            }
-
-                            $userList = "";
-                            $Users = $Projects->getProjectUsers($Project->id);
-                            $users=0;
-                            foreach ($Users as $user) {
-                                $users++;
-                                $getUser = $Account->getUsers($user->user_id);
-                                if(count($Users)==$users){
-                                    $userList .= $getUser->name;
-                                }else{
-                                    $userList .= $getUser->name.", ";
-                                }
-                            }
-
-                            if($Project->deadline==NULL OR $Project->deadline=="None" OR $Project->deadline=="0000-00-00 00:00:00"){
-                                $deadline = "None";
-                            }else{
-                                $deadlineTime = time() - strtotime($Project->deadline);
-                                $deadline = Basics::secondsToTime($deadlineTime);
-                            }
-                            ?>
-                            <tr class="is-selected">
-                                <td class="mdl-data-table__cell--non-numeric"><a href="project/<?php echo $Project->id; ?>"><?php echo $Project->name; ?></a></td>
-                                <td class="mdl-data-table__cell--non-numeric"><?php echo $userList; ?></td>
-                                <td class="mdl-data-table__cell--non-numeric"><?php echo $deadline; ?></td>
-                                <td class="mdl-data-table__cell--non-numeric"><?php echo $totalTime; ?></td>
+                <div class="mdl-card mdl-shadow--2dp todo">
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">Tasks</h2>
+                    </div>
+                    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp projects-table">
+                        <thead>
+                            <tr>
+                                <th class="mdl-data-table__cell--non-numeric">Name</th>
+                                <th class="mdl-data-table__cell--non-numeric">Member</th>
+                                <th class="mdl-data-table__cell--non-numeric">Start Time</th>
+                                <th class="mdl-data-table__cell--non-numeric">End Time</th>
+                                <th class="mdl-data-table__cell--non-numeric">Time used</th>
                             </tr>
-                            <?php
-                        }
-                        ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone overflow-x-auto">
                 <!-- ToDo_widget-->
@@ -172,47 +174,5 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
     </div>
 
 </main>
-<script>
-
-function getMinutesBetweenDates(startDate, endDate) {
-    var diff = endDate.getTime() - startDate.getTime();
-    return (diff / 60000);
-}
-
-function weather(lat, lng){
-    $.getJSON('http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lng + '&appid=5342396fae3e79c95bce218695ccdd33&units=metric', function(data){
-
-        var update = Math.floor(getMinutesBetweenDates(new Date(data['dt']*1000), new Date()));
-
-        var city = data['name'] + ', ' + data['sys']['country'];
-        var temp = Math.round( data['main']['temp'] * 10 ) / 10;
-        var wind = "Wind " + data['wind']['speed'] + " m/s";
-        $('.weather-city').html(city);
-        $('.weather-temperature').html(temp + "<sup>&deg;</sup>");
-        $('.weather-description').html(wind);
-
-        $('.weather-update').html("Last updated " + update + " minutes ago");
-    });
-}
-
-
-if(localStorage.location==undefined){
-    weather(localStorage.lat, localStorage.lng);
-    console.log("TESTe");
-}else{
-    console.log("TEST");
-    function getLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition);
-        } else {
-            alert('Your browser doesn\'t support this feature!');
-        }
-    }
-    function showPosition(position) {
-        weather(position.coords.latitude, position.coords.longitude);
-    }
-    getLocation();
-}
-</script>
 <?php
 include $_SERVER['DOCUMENT_ROOT'].'/lib/footer.php';
