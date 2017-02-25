@@ -95,22 +95,35 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                             <th class="mdl-data-table__cell--non-numeric">Project</th>
                             <th class="mdl-data-table__cell--non-numeric">Users</th>
                             <th class="mdl-data-table__cell--non-numeric">Deadline</th>
-                            <th class="mdl-data-table__cell--non-numeric">Total Time Used</th>
+                            <th class="mdl-data-table__cell--non-numeric">Your Time Used</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
                         foreach ($Projects->getUserProjects($user_id) as $project) {
                             $Project = $Projects->getProjects($project->project_id);
-
                             $totalTime = $Projects->getProjectTotalTime($Project->id, $user_id);
 
-                            $userList = "";
-                            foreach ($Projects->getProjectUsers($Project->id) as $user_id) {
-                                $userList .= $user_id->user_id;
+                            if(empty($totalTime)){
+                                $totalTime = "Nothing recorded";
+                            }else{
+                                $totalTime = Basics::secondsToTime($totalTime);
                             }
 
-                            if($Project->deadline==NULL OR $Project->deadline=="None"){
+                            $userList = "";
+                            $Users = $Projects->getProjectUsers($Project->id);
+                            $users=0;
+                            foreach ($Users as $user) {
+                                $users++;
+                                $getUser = $Account->getUsers($user->user_id);
+                                if(count($Users)==$users){
+                                    $userList .= $getUser->name;
+                                }else{
+                                    $userList .= $getUser->name.", ";
+                                }
+                            }
+
+                            if($Project->deadline==NULL OR $Project->deadline=="None" OR $Project->deadline=="0000-00-00 00:00:00"){
                                 $deadline = "None";
                             }else{
                                 $deadline = $Project->deadline;
@@ -120,7 +133,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                                 <td class="mdl-data-table__cell--non-numeric"><a href="project/<?php echo $Project->id; ?>"><?php echo $Project->name; ?></a></td>
                                 <td class="mdl-data-table__cell--non-numeric"><?php echo $userList; ?></td>
                                 <td class="mdl-data-table__cell--non-numeric"><?php echo $deadline; ?></td>
-                                <td class="mdl-data-table__cell--non-numeric"><?php echo Basics::secondsToTime($totalTime); ?></td>
+                                <td class="mdl-data-table__cell--non-numeric"><?php echo $totalTime; ?></td>
                             </tr>
                             <?php
                         }

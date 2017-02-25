@@ -1,6 +1,5 @@
 <?php
-include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
-
+include $_SERVER['DOCUMENT_ROOT'].'/config.php';
 if(isset($_POST['create'])){
     $name = $_POST['name'];
     $deadline = $_POST['deadline'];
@@ -22,12 +21,14 @@ if(isset($_POST['create'])){
     if(empty($errors)){
         $Projects->createProject($user_id, $name, $deadline, $description);
         Alert::setAlert("success", array("Your project is now created!"));
+        header("location:/index.php");
         exit();
     }else{
         Alert::setAlert("danger", $errors);
     }
 }
 
+include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
 ?>
 <main class="mdl-layout__content mdl-color--grey-100">
     <div class="mdl-card mdl-shadow--2dp settings">

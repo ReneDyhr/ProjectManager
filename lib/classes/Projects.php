@@ -5,12 +5,12 @@ class Projects{
         $this->DB = DB::getInstance();
     }
 
-    public function createProject(int $user_id, string $name, string $deadline, longtext $description){
+    public function createProject(int $user_id, $name, $deadline, $description){
         $this->DB->query("INSERT INTO ".DB_PREFIX."projects (name, description, deadline)VALUES(?, ?, ?)", array($name, $description, $deadline));
-        $this->DB->query("SELECT * FROM projects");
-        $project_id = $this->DB->last();
-
+        $this->DB->query("SELECT * FROM ".DB_PREFIX."projects");
+        $project_id = $this->DB->last()->id;
         $this->DB->query("INSERT INTO ".DB_PREFIX."project_users (user_id, project_id)VALUES(?, ?)", array($user_id, $project_id));
+        return true;
     }
 
     public function getUserProjects(int $user_id){
