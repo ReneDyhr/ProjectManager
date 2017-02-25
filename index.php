@@ -110,7 +110,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                                 $userList .= $user_id->user_id;
                             }
 
-                            if($Project->deadline==NULL){
+                            if($Project->deadline==NULL OR $Project->deadline=="None"){
                                 $deadline = "None";
                             }else{
                                 $deadline = $Project->deadline;

@@ -253,7 +253,7 @@ include_once $_SERVER['DOCUMENT_ROOT'].'/config.php';
                     <i class="material-icons" role="presentation">dashboard</i>
                     Dashboard
                 </a>
-                <a class="mdl-navigation__link mdl-navigation__link" href="#">
+                <a class="mdl-navigation__link mdl-navigation__link" href="/create-project">
                     <i class="material-icons" role="presentation">create</i>
                     Create Project
                 </a>
