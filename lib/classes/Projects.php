@@ -18,6 +18,15 @@ class Projects{
         return $query;
     }
 
+    public function checkUserToProject(int $user_id, int $project_id){
+        $this->DB->query("SELECT * FROM ".DB_PREFIX."project_users WHERE user_id = ? AND project_id = ?", array($user_id, $project_id))->results();
+        if($this->DB->count()>0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     public function getProjectUsers(int $project_id){
         $query = $this->DB->query("SELECT * FROM ".DB_PREFIX."project_users WHERE project_id = ?", array($project_id))->results();
         return $query;
