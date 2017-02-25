@@ -126,7 +126,8 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                             if($Project->deadline==NULL OR $Project->deadline=="None" OR $Project->deadline=="0000-00-00 00:00:00"){
                                 $deadline = "None";
                             }else{
-                                $deadline = $Project->deadline;
+                                $deadlineTime = time() - strtotime($Project->deadline);
+                                $deadline = Basics::secondsToTime($deadlineTime);
                             }
                             ?>
                             <tr class="is-selected">
