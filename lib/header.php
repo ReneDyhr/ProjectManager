@@ -36,6 +36,7 @@ include_once $_SERVER['DOCUMENT_ROOT'].'/config.php';
 <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,300,100,700,900' rel='stylesheet' type='text/css'>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <!-- inject:css -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="/css/lib/getmdl-select.min.css">
 <link rel="stylesheet" href="/css/lib/nv.d3.min.css">
 <link rel="stylesheet" href="/css/application.css">
@@ -215,7 +216,7 @@ include_once $_SERVER['DOCUMENT_ROOT'].'/config.php';
                     </li>
                     <li class="list__item--border-top"></li>
                     <li class="mdl-menu__item mdl-list__item">
-                        <a href="settings.php" style="color:#fff;" class="mdl-list__item-primary-content">
+                        <a href="/settings.php" style="color:#fff;" class="mdl-list__item-primary-content">
                             <i class="material-icons mdl-list__item-icon">settings</i>
                             Settings
                         </a>
@@ -249,7 +250,7 @@ include_once $_SERVER['DOCUMENT_ROOT'].'/config.php';
         <div class="mdl-layout__drawer">
             <header>darkboard</header>
             <nav class="mdl-navigation">
-                <a class="mdl-navigation__link mdl-navigation__link--current" href="index.php">
+                <a class="mdl-navigation__link mdl-navigation__link--current" href="/index.php">
                     <i class="material-icons" role="presentation">dashboard</i>
                     Dashboard
                 </a>

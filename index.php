@@ -89,58 +89,63 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
 
             <!-- Table-->
             <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone overflow-x-auto">
-                <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp projects-table">
-                    <thead>
-                        <tr>
-                            <th class="mdl-data-table__cell--non-numeric">Project</th>
-                            <th class="mdl-data-table__cell--non-numeric">Members</th>
-                            <th class="mdl-data-table__cell--non-numeric">Deadline</th>
-                            <th class="mdl-data-table__cell--non-numeric">Your Time Used</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        foreach ($Projects->getUserProjects($user_id) as $project) {
-                            $Project = $Projects->getProjects($project->project_id);
-                            $totalTime = $Projects->getProjectTotalTime($Project->id, $user_id);
+                <div class="mdl-card mdl-shadow--2dp projects">
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">Projects</h2>
+                    </div>
+                    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp projects-table">
+                        <thead>
+                            <tr>
+                                <th class="mdl-data-table__cell--non-numeric">Name</th>
+                                <th class="mdl-data-table__cell--non-numeric">Members</th>
+                                <th class="mdl-data-table__cell--non-numeric">Deadline</th>
+                                <th class="mdl-data-table__cell--non-numeric">Your Time Used</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            foreach ($Projects->getUserProjects($user_id) as $project) {
+                                $Project = $Projects->getProjects($project->project_id);
+                                $totalTime = $Projects->getProjectTotalTime($Project->id, $user_id);
 
-                            if(empty($totalTime)){
-                                $totalTime = "Nothing recorded";
-                            }else{
-                                $totalTime = Basics::secondsToTime($totalTime);
-                            }
-
-                            $userList = "";
-                            $Users = $Projects->getProjectUsers($Project->id);
-                            $users=0;
-                            foreach ($Users as $user) {
-                                $users++;
-                                $getUser = $Account->getUsers($user->user_id);
-                                if(count($Users)==$users){
-                                    $userList .= $getUser->name;
+                                if(empty($totalTime->totaltime)){
+                                    $totalTime = "Nothing recorded";
                                 }else{
-                                    $userList .= $getUser->name.", ";
+                                    $totalTime = Basics::secondsToTime($totalTime->totaltime);
                                 }
-                            }
 
-                            if($Project->deadline==NULL OR $Project->deadline=="None" OR $Project->deadline=="0000-00-00 00:00:00"){
-                                $deadline = "None";
-                            }else{
-                                $deadlineTime = time() - strtotime($Project->deadline);
-                                $deadline = Basics::secondsToTime($deadlineTime);
+                                $userList = "";
+                                $Users = $Projects->getProjectUsers($Project->id);
+                                $users=0;
+                                foreach ($Users as $user) {
+                                    $users++;
+                                    $getUser = $Account->getUsers($user->user_id);
+                                    if(count($Users)==$users){
+                                        $userList .= $getUser->name;
+                                    }else{
+                                        $userList .= $getUser->name.", ";
+                                    }
+                                }
+
+                                if($Project->deadline==NULL OR $Project->deadline=="None" OR $Project->deadline=="0000-00-00 00:00:00"){
+                                    $deadline = "None";
+                                }else{
+                                    $deadlineTime = time() - strtotime($Project->deadline);
+                                    $deadline = Basics::secondsToTime($deadlineTime);
+                                }
+                                ?>
+                                <tr class="is-selected">
+                                    <td class="mdl-data-table__cell--non-numeric"><a href="project/<?php echo $Project->id; ?>"><?php echo $Project->name; ?></a></td>
+                                    <td class="mdl-data-table__cell--non-numeric"><?php echo $userList; ?></td>
+                                    <td class="mdl-data-table__cell--non-numeric"><?php echo $deadline; ?></td>
+                                    <td class="mdl-data-table__cell--non-numeric"><?php echo $totalTime; ?></td>
+                                </tr>
+                                <?php
                             }
                             ?>
-                            <tr class="is-selected">
-                                <td class="mdl-data-table__cell--non-numeric"><a href="project/<?php echo $Project->id; ?>"><?php echo $Project->name; ?></a></td>
-                                <td class="mdl-data-table__cell--non-numeric"><?php echo $userList; ?></td>
-                                <td class="mdl-data-table__cell--non-numeric"><?php echo $deadline; ?></td>
-                                <td class="mdl-data-table__cell--non-numeric"><?php echo $totalTime; ?></td>
-                            </tr>
-                            <?php
-                        }
-                        ?>
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone overflow-x-auto">
                 <!-- ToDo_widget-->

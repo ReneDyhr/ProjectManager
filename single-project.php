@@ -25,11 +25,15 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
             <div class="mdl-cell mdl-cell--4-col-desktop mdl-cell--4-col-tablet mdl-cell--2-col-phone">
                 <div class="mdl-card mdl-shadow--2dp pie-chart">
                     <div class="mdl-card__title">
-                        <h2 class="mdl-card__title-text"><?php echo $Project->name; ?></h2>
+                        <h2 class="mdl-card__title-text">Project Information</h2>
                     </div>
                     <div class="mdl-card__supporting-text">
                         <table class="mdl-data-table mdl-js-data-table projects-table">
                             <tbody>
+                                <tr>
+                                    <td class="mdl-data-table__cell--non-numeric">Project Name</td>
+                                    <td class="mdl-data-table__cell--numeric"><?php echo $Project->name; ?></td>
+                                </tr>
                                 <tr>
                                     <td class="mdl-data-table__cell--non-numeric">Deadline</td>
                                     <td class="mdl-data-table__cell--numeric"><?php echo $deadline; ?></td>
@@ -40,7 +44,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                 </div>
             </div>
 
-            <div class="mdl-cell mdl-cell--4-col-desktop mdl-cell--4-col-tablet mdl-cell--2-col-phone">
+            <div class="mdl-cell mdl-cell--8-col-desktop mdl-cell--8-col-tablet mdl-cell--2-col-phone overflow-x-auto">
                 <div class="mdl-card mdl-shadow--2dp pie-chart">
                     <div class="mdl-card__title">
                         <h2 class="mdl-card__title-text">Members</h2>
@@ -50,7 +54,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                             <thead>
                                 <tr>
                                     <th class="mdl-data-table__cell--non-numeric">Name</th>
-                                    <th class="mdl-data-table__cell--non-numeric">Tasks</th>
+                                    <th class="mdl-data-table__cell--numeric">Tasks</th>
                                     <th class="mdl-data-table__cell--non-numeric">Total Time Used</th>
                                 </tr>
                             </thead>
@@ -60,17 +64,17 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                                 foreach ($Users as $user) {
                                     $getUser = $Account->getUsers($user->user_id);
 
-                                    $totalTime = $Projects->getProjectTotalTime($project_id, $user->user_id);
+                                    $totalTimes = $Projects->getProjectTotalTime($project_id, $user->user_id);
 
-                                    if(empty($totalTime)){
+                                    if(empty($totalTimes->totaltime)){
                                         $totalTime = "Nothing recorded";
                                     }else{
-                                        $totalTime = Basics::secondsToTime($totalTime);
+                                        $totalTime = Basics::secondsToTime($totalTimes->totaltime);
                                     }
                                     ?>
                                     <tr>
                                         <td class="mdl-data-table__cell--non-numeric"><?php echo $getUser->name; ?></td>
-                                        <td class="mdl-data-table__cell--non-numeric"></td>
+                                        <td class="mdl-data-table__cell--numeric"><?php echo $totalTimes->totaltasks;?></td>
                                         <td class="mdl-data-table__cell--non-numeric"><?php echo $totalTime; ?></td>
                                     </tr>
                                     <?php
@@ -82,63 +86,21 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                 </div>
             </div>
 
-            <!-- Trending widget-->
-            <div class="mdl-cell mdl-cell--4-col-desktop mdl-cell--4-col-tablet mdl-cell--2-col-phone">
-                <div class="mdl-card mdl-shadow--2dp trending">
-                    <div class="mdl-card__title">
-                        <h2 class="mdl-card__title-text">Trending</h2>
-                    </div>
-                    <div class="mdl-card__supporting-text">
-                        <ul class="mdl-list">
-                            <li class="mdl-list__item">
-                                <span class="mdl-list__item-primary-content list__item-text">UX</span>
-                                <span class="mdl-list__item-secondary-content">
-                                    <i class="material-icons trending__arrow-up" role="presentation">&#xE5C7</i>
-                                </span>
-                                <span class="mdl-list__item-secondary-content trending__percent">1 %</span>
-                            </li>
-                            <li class="mdl-list__item list__item--border-top">
-                                <span class="mdl-list__item-primary-content list__item-text">PHP</span>
-                                <span class="mdl-list__item-secondary-content">
-                                    <i class="material-icons trending__arrow-down" role="presentation">&#xE5C5</i>
-                                </span>
-                                <span class="mdl-list__item-secondary-content trending__percent">2 %</span>
-                            </li>
-                            <li class="mdl-list__item list__item--border-top">
-                                <span class="mdl-list__item-primary-content list__item-text ">Big Data</span>
-                                <span class="mdl-list__item-secondary-content">
-                                    <i class="material-icons trending__arrow-up" role="presentation">&#xE5C7</i>
-                                </span>
-                                <span class="mdl-list__item-secondary-content trending__percent">5 %</span>
-                            </li>
-                            <li class="mdl-list__item list__item--border-top">
-                                <span class="mdl-list__item-primary-content list__item-text">Material Design</span>
-                                <span class="mdl-list__item-secondary-content">
-                                    <i class="material-icons trending__arrow-up" role="presentation">&#xE5C7</i>
-                                </span>
-                                <span class="mdl-list__item-secondary-content trending__percent">18 %</span>
-                            </li>
-                            <li class="mdl-list__item list__item--border-top">
-                                <span class="mdl-list__item-primary-content">JavaScript</span>
-                                <span class="mdl-list__item-secondary-content">
-                                    <i class="material-icons trending__arrow-up" role="presentation">&#xE5C7</i>
-                                </span>
-                                <span class="mdl-list__item-secondary-content trending__percent">17 %</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
 
             <!-- Table-->
-            <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone overflow-x-auto">
-                <div class="mdl-card mdl-shadow--2dp todo">
+            <div class="mdl-cell mdl-cell--8-col-desktop mdl-cell--8-col-tablet mdl-cell--6-col-phone overflow-x-auto">
+                <div class="mdl-card mdl-shadow--2dp tasks">
                     <div class="mdl-card__title">
                         <h2 class="mdl-card__title-text">Tasks</h2>
+                        <div class="mdl-layout-spacer"></div>
+                        <div class="mdl-card__subtitle-text">
+                            <a href="#" data-toggle="modal" data-target="#createTask" class="mdl-button mdl-button--small" data-upgraded=",MaterialButton">Create Tasks</a>
+                        </div>
                     </div>
                     <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp projects-table">
                         <thead>
                             <tr>
+                                <th class="mdl-data-table__cell--non-numeric"></th>
                                 <th class="mdl-data-table__cell--non-numeric">Name</th>
                                 <th class="mdl-data-table__cell--non-numeric">Member</th>
                                 <th class="mdl-data-table__cell--non-numeric">Start Time</th>
@@ -147,11 +109,35 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                             </tr>
                         </thead>
                         <tbody>
+                            <tr>
+                                <td><i class="fa fa-check"></i></td>
+                                <td class="mdl-data-table__cell--non-numeric">Working on create account</td>
+                                <td class="mdl-data-table__cell--non-numeric">René Dyhr</td>
+                                <td class="mdl-data-table__cell--non-numeric">26. Feb 2017, 10:00</td>
+                                <td class="mdl-data-table__cell--non-numeric">26. Feb 2017, 12:00</td>
+                                <td class="mdl-data-table__cell--non-numeric">2 hours</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa fa-times"></i></td>
+                                <td class="mdl-data-table__cell--non-numeric">Working on create account</td>
+                                <td class="mdl-data-table__cell--non-numeric">René Dyhr</td>
+                                <td class="mdl-data-table__cell--non-numeric">26. Feb 2017, 10:00</td>
+                                <td class="mdl-data-table__cell--non-numeric">26. Feb 2017, 12:00</td>
+                                <td class="mdl-data-table__cell--non-numeric">2 hours</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa fa-clock-o"></i></td>
+                                <td class="mdl-data-table__cell--non-numeric">Working on create account</td>
+                                <td class="mdl-data-table__cell--non-numeric">René Dyhr</td>
+                                <td class="mdl-data-table__cell--non-numeric">26. Feb 2017, 10:00</td>
+                                <td class="mdl-data-table__cell--non-numeric">26. Feb 2017, 12:00</td>
+                                <td class="mdl-data-table__cell--non-numeric">2 hours</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-            <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone overflow-x-auto">
+            <div class="mdl-cell mdl-cell--4-col-desktop mdl-cell--4-col-tablet mdl-cell--6-col-phone overflow-x-auto">
                 <!-- ToDo_widget-->
                 <div class="mdl-card mdl-shadow--2dp todo">
                     <div class="mdl-card__title">
@@ -174,5 +160,23 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
     </div>
 
 </main>
+
+
+<div id="createTask" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Modal Header</h4>
+            </div>
+            <div class="modal-body">
+                <p>Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <?php
 include $_SERVER['DOCUMENT_ROOT'].'/lib/footer.php';
