@@ -173,7 +173,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                 <p>Some text in the modal.</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="mdl-button" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
