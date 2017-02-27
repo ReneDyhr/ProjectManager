@@ -14,6 +14,24 @@ if($Project->deadline==NULL OR $Project->deadline=="None" OR $Project->deadline=
 }
 
 
+if(isset($_POST['createTask'])){
+    $name = $_POST['taskName'];
+
+    if(empty($name)){
+        $errors[] = "You have to give your tasks a name!";
+    }
+
+
+    if(empty($errors)){
+        $Projects->createTask($project_id, $user_id, $name);
+        Alert::setAlert("success", array("Your task is now created!"));
+        header("location:/project/".$project_id);
+        exit();
+    }else{
+        Alert::setAlert("danger", $errors);
+    }
+}
+
 include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
 ?>
 <main class="mdl-layout__content">
@@ -94,7 +112,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                         <h2 class="mdl-card__title-text">Tasks</h2>
                         <div class="mdl-layout-spacer"></div>
                         <div class="mdl-card__subtitle-text">
-                            <a href="#" data-toggle="modal" data-target="#createTask" class="mdl-button mdl-button--small" data-upgraded=",MaterialButton">Create Tasks</a>
+                            <a href="#" data-toggle="modal" data-target="#createTask" class="mdl-button mdl-button--small" data-upgraded=",MaterialButton">Create Task</a>
                         </div>
                     </div>
                     <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp projects-table">
@@ -167,14 +185,26 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Modal Header</h4>
+                <h4 class="modal-title">Create Task</h4>
             </div>
-            <div class="modal-body">
-                <p>Some text in the modal.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="mdl-button" data-dismiss="modal">Close</button>
-            </div>
+            <form action="#" method="post" class="form">
+                <div class="modal-body settings">
+                    <div class="form__article">
+                        <div class="mdl-grid">
+                            <div class="mdl-cell mdl-cell--12-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input class="mdl-textfield__input" type="text" name="taskName" id="taskName" value=""/>
+                                <label class="mdl-textfield__label" for="taskName">Task Name</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="mdl-button" data-dismiss="modal" data-upgraded=",MaterialButton,MaterialRipple">Close</button>
+                    <button name="createTask" type="submit" id="submit_button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored-blue" data-upgraded=",MaterialButton">
+                        Create
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

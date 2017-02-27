@@ -72,7 +72,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                         <span class="mdl-checkbox__label">Entered information is reliable</span>
                     </label>
                     <button name="create" type="submit" id="submit_button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-                        Save
+                        Create
                     </button>
                 </div>
             </form>

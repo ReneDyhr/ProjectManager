@@ -7479,6 +7479,7 @@ content: url(../images/cloudy_and_snow.svg)
 .modal-body {
     position: relative;
     padding: 15px;
+    box-sizing: border-box;
 }
 .modal-footer {
     padding: 10px;
