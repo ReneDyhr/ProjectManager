@@ -1,12 +1,12 @@
 <?php
 include $_SERVER['DOCUMENT_ROOT'].'/config.php';
-$project_id = $_GET['project_id'];
-if(!$Projects->checkUserToProject($user_id, $project_id)){
+$projectId = $_GET['projectId'];
+if(!$Projects->checkUserToProject($user_id, $projectId)){
     header("location:/");
     exit();
 }
 
-$Project = $Projects->getProjects($project_id);
+$Project = $Projects->getProjects($projectId);
 if($Project->deadline==NULL OR $Project->deadline=="None" OR $Project->deadline=="0000-00-00 00:00:00"){
     $deadline = "None";
 }else{
@@ -23,9 +23,27 @@ if(isset($_POST['createTask'])){
 
 
     if(empty($errors)){
-        $Projects->createTask($project_id, $user_id, $name);
+        $Projects->createTask($projectId, $user_id, $name);
         Alert::setAlert("success", array("Your task is now created!"));
-        header("location:/project/".$project_id);
+        header("location:/project/".$projectId);
+        exit();
+    }else{
+        Alert::setAlert("danger", $errors);
+    }
+}
+
+
+if(isset($_POST['endTask'])){
+    $taskId = $_POST['taskId'];
+
+    if(!$Projects->checkTask($projectId, $taskId)){
+        $errors[] = "This task doesn\'t belong to this project!";
+    }
+
+    if(empty($errors)){
+        $Projects->endTask($projectId, $taskId);
+        Alert::setAlert("success", array("Your task is now ended!"));
+        header("location:/project/".$projectId);
         exit();
     }else{
         Alert::setAlert("danger", $errors);
@@ -78,11 +96,11 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                             </thead>
                             <tbody>
                                 <?php
-                                $Users = $Projects->getProjectUsers($project_id);
+                                $Users = $Projects->getProjectUsers($projectId);
                                 foreach ($Users as $user) {
                                     $getUser = $Account->get($user->user_id);
 
-                                    $totalTimes = $Projects->getProjectTotalTime($project_id, $user->user_id);
+                                    $totalTimes = $Projects->getProjectTotalTime($projectId, $user->user_id);
 
                                     if(empty($totalTimes->totaltime)){
                                         $totalTime = "Nothing recorded";
@@ -129,7 +147,8 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                         <tbody>
                             <?php
 
-                            foreach ($Projects->getTasks($project_id) as $task) {
+                            foreach ($Projects->getTasks($projectId) as $task) {
+                                $getUser = $Account->get($task->user_id);
                                 $icon = "";
                                 if($task->status==NULL OR $task->status==0){
                                     $icon = "clock-o";
@@ -139,22 +158,29 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                                     $icon = "times";
                                 }
 
-                                $start_time = strftime("%d. %b %Y %H:%M", strtotime($task->start_time));;
+                                $startTime = strftime("%d. %b %Y %H:%M", strtotime($task->start_time));;
 
                                 if($task->end_time==NULL OR $task->end_time == "0000-00-00 00:00:00"){
-                                    $end_time = "<button type=\"submit\" name=\"endTask\">End Task</button>";
+                                    if($task->user_id == $user_id){
+                                        $endTime = "<form method=\"post\">\n";
+                                        $endTime .="<input type=\"number\" style=\"display:none;\" name=\"taskId\" value=\"{$task->id}\">";
+                                        $endTime .="<button type=\"submit\" name=\"endTask\" class=\"mdl-button mdl-button--small\" data-upgraded=\",MaterialButton\">End Task</button>";
+                                        $endTime .="</form>\n";
+                                    }else{
+                                        $endTime = "";
+                                    }
                                     $hours = Basics::secondsToTime(Basics::secondsBetweenDates($task->start_time, date("Y-m-d H:i:s")));
                                 }else{
-                                    $end_time = strftime("%d. %b %Y %H:%M", strtotime($task->end_time));;
+                                    $endTime = strftime("%d. %b %Y %H:%M", strtotime($task->end_time));;
                                     $hours = Basics::secondsToTime($task->totaltime);
                                 }
 
                                 echo "<tr>\n";
                                 echo "    <td><i class=\"fa fa-{$icon}\"></i></td>\n";
                                 echo "    <td class=\"mdl-data-table__cell--non-numeric\">{$task->name}</td>\n";
-                                echo "    <td class=\"mdl-data-table__cell--non-numeric\">René Dyhr</td>\n";
-                                echo "    <td class=\"mdl-data-table__cell--non-numeric\">{$start_time}</td>\n";
-                                echo "    <td class=\"mdl-data-table__cell--non-numeric\">{$end_time}</td>\n";
+                                echo "    <td class=\"mdl-data-table__cell--non-numeric\">{$getUser->name}</td>\n";
+                                echo "    <td class=\"mdl-data-table__cell--non-numeric\">{$startTime}</td>\n";
+                                echo "    <td class=\"mdl-data-table__cell--non-numeric\">{$endTime}</td>\n";
                                 echo "    <td class=\"mdl-data-table__cell--non-numeric\">{$hours}</td>\n";
                                 echo "</tr>\n";
                             }
