@@ -54,4 +54,9 @@ class Projects{
         $this->DB->query("INSERT INTO ".DB_PREFIX."project_tasks (project_id, user_id, name, start_time)VALUES(?, ?, ?, ?)", array($project_id, $user_id, $name, $start_time));
         return true;
     }
+
+    public function getTasks(int $project_id){
+        $query = $this->DB->query("SELECT * FROM ".DB_PREFIX."project_tasks WHERE project_id = ? ORDER BY status ASC", array($project_id))->results();
+        return $query;
+    }
 }

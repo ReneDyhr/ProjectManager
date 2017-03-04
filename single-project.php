@@ -80,7 +80,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                                 <?php
                                 $Users = $Projects->getProjectUsers($project_id);
                                 foreach ($Users as $user) {
-                                    $getUser = $Account->getUsers($user->user_id);
+                                    $getUser = $Account->get($user->user_id);
 
                                     $totalTimes = $Projects->getProjectTotalTime($project_id, $user->user_id);
 
@@ -106,8 +106,8 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
 
 
             <!-- Table-->
-            <div class="mdl-cell mdl-cell--8-col-desktop mdl-cell--8-col-tablet mdl-cell--6-col-phone overflow-x-auto">
-                <div class="mdl-card mdl-shadow--2dp tasks">
+            <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--12-col-phone overflow-x-auto">
+                <div class="mdl-card mdl-shadow--2dp tasks overflow-x-auto">
                     <div class="mdl-card__title">
                         <h2 class="mdl-card__title-text">Tasks</h2>
                         <div class="mdl-layout-spacer"></div>
@@ -127,30 +127,38 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><i class="fa fa-check"></i></td>
-                                <td class="mdl-data-table__cell--non-numeric">Working on create account</td>
-                                <td class="mdl-data-table__cell--non-numeric">René Dyhr</td>
-                                <td class="mdl-data-table__cell--non-numeric">26. Feb 2017, 10:00</td>
-                                <td class="mdl-data-table__cell--non-numeric">26. Feb 2017, 12:00</td>
-                                <td class="mdl-data-table__cell--non-numeric">2 hours</td>
-                            </tr>
-                            <tr>
-                                <td><i class="fa fa-times"></i></td>
-                                <td class="mdl-data-table__cell--non-numeric">Working on create account</td>
-                                <td class="mdl-data-table__cell--non-numeric">René Dyhr</td>
-                                <td class="mdl-data-table__cell--non-numeric">26. Feb 2017, 10:00</td>
-                                <td class="mdl-data-table__cell--non-numeric">26. Feb 2017, 12:00</td>
-                                <td class="mdl-data-table__cell--non-numeric">2 hours</td>
-                            </tr>
-                            <tr>
-                                <td><i class="fa fa-clock-o"></i></td>
-                                <td class="mdl-data-table__cell--non-numeric">Working on create account</td>
-                                <td class="mdl-data-table__cell--non-numeric">René Dyhr</td>
-                                <td class="mdl-data-table__cell--non-numeric">26. Feb 2017, 10:00</td>
-                                <td class="mdl-data-table__cell--non-numeric">26. Feb 2017, 12:00</td>
-                                <td class="mdl-data-table__cell--non-numeric">2 hours</td>
-                            </tr>
+                            <?php
+
+                            foreach ($Projects->getTasks($project_id) as $task) {
+                                $icon = "";
+                                if($task->status==NULL OR $task->status==0){
+                                    $icon = "clock-o";
+                                }elseif($task->status==1){
+                                    $icon = "check";
+                                }elseif($task->status==2){
+                                    $icon = "times";
+                                }
+
+                                $start_time = strftime("%d. %b %Y %H:%M", strtotime($task->start_time));;
+
+                                if($task->end_time==NULL OR $task->end_time == "0000-00-00 00:00:00"){
+                                    $end_time = "<button type=\"submit\" name=\"endTask\">End Task</button>";
+                                    $hours = Basics::secondsToTime(Basics::secondsBetweenDates($task->start_time, date("Y-m-d H:i:s")));
+                                }else{
+                                    $end_time = strftime("%d. %b %Y %H:%M", strtotime($task->end_time));;
+                                    $hours = Basics::secondsToTime($task->totaltime);
+                                }
+
+                                echo "<tr>\n";
+                                echo "    <td><i class=\"fa fa-{$icon}\"></i></td>\n";
+                                echo "    <td class=\"mdl-data-table__cell--non-numeric\">{$task->name}</td>\n";
+                                echo "    <td class=\"mdl-data-table__cell--non-numeric\">René Dyhr</td>\n";
+                                echo "    <td class=\"mdl-data-table__cell--non-numeric\">{$start_time}</td>\n";
+                                echo "    <td class=\"mdl-data-table__cell--non-numeric\">{$end_time}</td>\n";
+                                echo "    <td class=\"mdl-data-table__cell--non-numeric\">{$hours}</td>\n";
+                                echo "</tr>\n";
+                            }
+                            ?>
                         </tbody>
                     </table>
                 </div>

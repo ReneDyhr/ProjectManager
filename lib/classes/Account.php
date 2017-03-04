@@ -6,7 +6,7 @@ class Account{
     }
 
 
-    public function getUsers(int $user_id = 0){
+    public function get(int $user_id = 0){
         if($user_id==0){
             $query = $this->DB->query("SELECT * FROM ".DB_PREFIX."users WHERE (status IN (0,1) OR status IS NULL)")->results();
         }else{

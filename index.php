@@ -119,7 +119,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                                 $users=0;
                                 foreach ($Users as $user) {
                                     $users++;
-                                    $getUser = $Account->getUsers($user->user_id);
+                                    $getUser = $Account->get($user->user_id);
                                     if(count($Users)==$users){
                                         $userList .= $getUser->name;
                                     }else{
