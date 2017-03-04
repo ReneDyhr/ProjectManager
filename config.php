@@ -25,9 +25,8 @@ $Projects = new Projects();
 $Account = new Account();
 
 $limit=10;
-$page = 1;
 if (isset($_GET['page'])) {
     $page = $_GET['page'];
+}else{
+    $page = 1;
 }
-$limitT = (($page * $limit) - $limit);
-$pagination = $limit;
