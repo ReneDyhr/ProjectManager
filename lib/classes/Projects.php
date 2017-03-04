@@ -43,7 +43,7 @@ class Projects{
 
 
     public function getProjectTotalTime(int $projectId, int $userId){
-        $query = $this->DB->query("SELECT sum(totaltime) as totaltime, count(*) as totaltasks FROM ".DB_PREFIX."project_tasks WHERE (status IN (0, 1) OR status IS NULL)  AND project_id = ? AND user_id = ?", array($projectId, $userId))->results()[0];
+        $query = $this->DB->query("SELECT sum(totaltime) as totaltime, count(*) as totaltasks FROM ".DB_PREFIX."project_tasks WHERE (status IN (0, 1, 2) OR status IS NULL)  AND project_id = ? AND user_id = ?", array($projectId, $userId))->results()[0];
         return $query;
     }
 

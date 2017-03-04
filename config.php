@@ -25,8 +25,20 @@ $Projects = new Projects();
 $Account = new Account();
 
 $limit=10;
+$page = 1;
 if (isset($_GET['page'])) {
     $page = $_GET['page'];
-}else{
-    $page = 1;
 }
+$limitT = (($page * $limit) - $limit);
+$pagination = $limit;
+
+// $Articles = $News->getNewsByCategorySlug($slug, "$limitT, $pagination");
+// foreach ($Articles as $article) {
+// }
+//
+// $ArticlesPag = $News->getNewsByCategorySlug($slug);
+// echo $News->getPagination("/archive/news/{$slug}?page=", $page, $pagination, $limit, $ArticlesPag);
+//
+// public function getPagination($target, $page, $pagination, $limit, $data){
+//     return $this->Pagination->make($target, $page, $pagination, $limit, $data);
+// }
