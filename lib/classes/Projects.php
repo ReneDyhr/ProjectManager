@@ -57,17 +57,25 @@ class Projects{
 
     public function getTasks(int $projectId, int $taskId = 0){
         if($taskId==0){
-            $query = $this->DB->query("SELECT * FROM ".DB_PREFIX."project_tasks WHERE project_id = ? ORDER BY status ASC, id DESC", array($projectId))->results();
+            $query = $this->DB->query("SELECT * FROM ".DB_PREFIX."project_tasks WHERE project_id = ? ORDER BY id DESC", array($projectId))->results();
         }else{
             $query = $this->DB->query("SELECT * FROM ".DB_PREFIX."project_tasks WHERE project_id = ? AND id = ? ORDER BY status ASC", array($projectId, $taskId))->results()[0];
         }
         return $query;
     }
 
-    public function endTask(int $projectId, int $taskId){
+    public function stopTask(int $projectId, int $taskId){
         $startTime = $this->getTasks($projectId, $taskId)->start_time;
         $endTime = date("Y-m-d H:i:s");
         $this->DB->query("UPDATE ".DB_PREFIX."project_tasks SET status = 1, end_time = ?, totaltime = ? WHERE project_id = ? AND id = ?", array($endTime, Basics::secondsBetweenDates($startTime, $endTime),$projectId, $taskId));
+        return true;
+    }
+
+    public function deleteTask(int $projectId, int $taskId){
+        $startTime = $this->getTasks($projectId, $taskId)->start_time;
+        $endTime = date("Y-m-d H:i:s");
+        $this->DB->query("UPDATE ".DB_PREFIX."project_tasks SET status = 2, end_time = ?, totaltime = ? WHERE project_id = ? AND id = ?", array($endTime, Basics::secondsBetweenDates($startTime, $endTime),$projectId, $taskId));
+        return true;
     }
 
     public function checkTask(int $projectId, int $taskId){

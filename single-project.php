@@ -33,7 +33,7 @@ if(isset($_POST['createTask'])){
 }
 
 
-if(isset($_POST['endTask'])){
+if(isset($_POST['stopTask'])){
     $taskId = $_POST['taskId'];
 
     if(!$Projects->checkTask($projectId, $taskId)){
@@ -41,7 +41,24 @@ if(isset($_POST['endTask'])){
     }
 
     if(empty($errors)){
-        $Projects->endTask($projectId, $taskId);
+        $Projects->stopTask($projectId, $taskId);
+        Alert::setAlert("success", array("Your task is now ended!"));
+        header("location:/project/".$projectId);
+        exit();
+    }else{
+        Alert::setAlert("danger", $errors);
+    }
+}
+
+if(isset($_POST['deleteTask'])){
+    $taskId = $_POST['taskId'];
+
+    if(!$Projects->checkTask($projectId, $taskId)){
+        $errors[] = "This task doesn\'t belong to this project!";
+    }
+
+    if(empty($errors)){
+        $Projects->deleteTask($projectId, $taskId);
         Alert::setAlert("success", array("Your task is now ended!"));
         header("location:/project/".$projectId);
         exit();
@@ -164,7 +181,8 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                                     if($task->user_id == $user_id){
                                         $endTime = "<form method=\"post\">\n";
                                         $endTime .="<input type=\"number\" style=\"display:none;\" name=\"taskId\" value=\"{$task->id}\">";
-                                        $endTime .="<button type=\"submit\" name=\"endTask\" class=\"mdl-button mdl-button--small\" data-upgraded=\",MaterialButton\">End Task</button>";
+                                        $endTime .="<button type=\"submit\" name=\"stopTask\" class=\"mdl-button mdl-button--small\" data-upgraded=\",MaterialButton\">Stop</button>";
+                                        $endTime .="<button type=\"submit\" name=\"deleteTask\" class=\"mdl-button mdl-button--small\" data-upgraded=\",MaterialButton\">Delete</button>";
                                         $endTime .="</form>\n";
                                     }else{
                                         $endTime = "";
