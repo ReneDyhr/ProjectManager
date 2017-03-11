@@ -4,13 +4,13 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 session_start();
-define( 'INSTALLER',   false );
+define( 'INSTALLER',   true );
 /* MySQL settings */
-define( 'DB_PREFIX',   'project_' );
-define( 'DB_NAME',     'projectmanager' );
-define( 'DB_USER',     'root' );
-define( 'DB_PASSWORD', 'root' );
-define( 'DB_HOST',     'localhost' );
+define( 'DB_PREFIX',   '' );
+define( 'DB_NAME',     '' );
+define( 'DB_USER',     '' );
+define( 'DB_PASSWORD', '' );
+define( 'DB_HOST',     '' );
 
 date_default_timezone_set('Europe/Copenhagen');
 
