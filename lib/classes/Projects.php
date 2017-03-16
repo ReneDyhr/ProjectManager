@@ -46,6 +46,10 @@ class Projects{
         $query = $this->DB->query("SELECT sum(totaltime) as totaltime, count(*) as totaltasks FROM ".DB_PREFIX."project_tasks WHERE (status IN (0, 1, 2) OR status IS NULL)  AND project_id = ? AND user_id = ?", array($projectId, $userId))->results()[0];
         return $query;
     }
+    public function getProjectTotalDays(int $projectId, int $userId){
+        $query = $this->DB->query("SELECT id, DATE(start_time) FROM ".DB_PREFIX."project_tasks WHERE project_id = ? AND user_id = ? GROUP BY DATE(".DB_PREFIX."project_tasks.start_time)", array($projectId, $userId))->results();
+        return $query;
+    }
 
 
 

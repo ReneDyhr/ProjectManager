@@ -109,6 +109,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                                     <th class="mdl-data-table__cell--non-numeric">Name</th>
                                     <th class="mdl-data-table__cell--numeric">Tasks</th>
                                     <th class="mdl-data-table__cell--non-numeric">Total Time Used</th>
+                                    <th class="mdl-data-table__cell--non-numeric">Avg Time Pr. Day</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -118,7 +119,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                                     $getUser = $Account->get($user->user_id);
 
                                     $totalTimes = $Projects->getProjectTotalTime($projectId, $user->user_id);
-
+                                    $totalDays = count($Projects->getProjectTotalDays($projectId, $user->user_id));
                                     if(empty($totalTimes->totaltime)){
                                         $totalTime = "Nothing recorded";
                                     }else{
@@ -129,6 +130,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                                         <td class="mdl-data-table__cell--non-numeric"><?php echo $getUser->name; ?></td>
                                         <td class="mdl-data-table__cell--numeric"><?php echo $totalTimes->totaltasks;?></td>
                                         <td class="mdl-data-table__cell--non-numeric"><?php echo $totalTime; ?></td>
+                                        <td class="mdl-data-table__cell--non-numeric"><?php echo Basics::secondsToTime(round(($totalTimes->totaltime/3600)/$totalDays)*3600); ?></td>
                                     </tr>
                                     <?php
                                 }
@@ -207,8 +209,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                     </table>
                 </div>
             </div>
-            <div class="mdl-cell mdl-cell--4-col-desktop mdl-cell--4-col-tablet mdl-cell--6-col-phone overflow-x-auto">
-                <!-- ToDo_widget-->
+            <!-- <div class="mdl-cell mdl-cell--4-col-desktop mdl-cell--4-col-tablet mdl-cell--6-col-phone overflow-x-auto">
                 <div class="mdl-card mdl-shadow--2dp todo">
                     <div class="mdl-card__title">
                         <h2 class="mdl-card__title-text">To-do list</h2>
@@ -225,7 +226,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                         </button>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 
