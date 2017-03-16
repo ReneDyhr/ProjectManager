@@ -130,7 +130,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/lib/header.php';
                                         <td class="mdl-data-table__cell--non-numeric"><?php echo $getUser->name; ?></td>
                                         <td class="mdl-data-table__cell--numeric"><?php echo $totalTimes->totaltasks;?></td>
                                         <td class="mdl-data-table__cell--non-numeric"><?php echo $totalTime; ?></td>
-                                        <td class="mdl-data-table__cell--non-numeric"><?php echo Basics::secondsToTime(round(($totalTimes->totaltime/3600)/$totalDays)*3600); ?></td>
+                                        <td class="mdl-data-table__cell--non-numeric"><?php echo Basics::secondsToTime(round($totalTimes->totaltime/$totalDays)); ?></td>
                                     </tr>
                                     <?php
                                 }
